@@ -249,9 +249,9 @@
 
     <div class="columns is-centered has-text-centered">
       <!-- Visual Effects. -->
-      <div class="column">
-        <div class="content">
-          <h2 class="title is-3">Demo</h2>
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <h2 class="title is-3">Introduction</h2>
           <p>
             <!-- Using <i>nerfies</i> you can create fun visual effects. This Dolly zoom effect
             would be impossible without nerfies since it would require going through a wall. -->
@@ -271,9 +271,26 @@
             This shows that Spot is robust to disturbance.
           </p>
           <video id="dollyzoom" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/spot_cvpr_demo_v0.2.mp4"
+            <source src="./static/videos/spot_explore.2.mp4"
                     type="video/mp4">
           </video>
+        </div>
+      </div>
+
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <h2 class="title is-3">Fufure Direction</h2>
+          <p>
+            <!-- Using <i>nerfies</i> you can create fun visual effects. This Dolly zoom effect
+            would be impossible without nerfies since it would require going through a wall. -->
+            he current demo still does not consider the case where the object is not static
+            (locations changed over time), LLMs need to replan due to disturbance,
+            and when a pre-built map of the environment is not provided.
+            We want to keep scaling our research and infrastructure to multiple scenes and explore
+            other Spot's low-level skills such as opening the door and pouring the coffee into a mug.
+            In addition, we are continuously exploring LLMs for driving decision-making
+            for robots such as grounding LLMs in the state of the robot to account for disturbance.
+          </p>
         </div>
       </div>
       <!--/ Visual Effects. -->
