@@ -95,17 +95,17 @@
             Natural language provides a simple way for humans to specify a goal for a robot,
             such as <i>"go to the kitchen and bring the sugar to me."</i>
             However, current state-of-the-art language-based embodied AI systems
-            such as SayCan do not have such capability since
+            such as SayCan (Ahn et al., 2022) do not have such capability since
             (1) they rely on a fixed-set vocabulary that cannot generalize to diverse instructions,
             and (2) the robot does not know the semantic meaning of the environment,
             and thus requires knowing point goal location to navigate to.
           </p>
           <p>
             In this post, we demonstrate embodied AI systems that use large language models (LLMs)
-            to chain Spot's low-level skills and thus complete open-vocabulary object nav-pick-place tasks.
+            to chain Spot's (quadruped robot by Boston Dynamics) low-level skills and thus complete open-vocabulary object nav-pick-place tasks.
             The proposed system consists of three parts:
             (1) LLMs take a natural language instruction as input and produce a sequence of low-level skills,
-            along with their corresponding skills' input parameters such as the target object text,
+            along with their corresponding skills' input parameters such as the target object name,
             (2) a pre-built map that stores CLIP embedding of the environment is used to query the point goal location given text generated from LLMs,
             and (3) finally these low-level skills are executed sequentially to complete the task.
           </p>
@@ -114,7 +114,7 @@
             These components form a natural hierarchical architecture for intelligent control:
             a high level at which goal and state are identified from sensory data
             and object search and feasible plans are formulated given text,
-            and a low level at which skills are chained together.
+            and a low level at which skills are chained together while being a response to changing conditions.
           </p>
         </div>
       </div>
@@ -142,8 +142,9 @@
             defined by the text so that Spot can grasp the object.
             Finally, Spot uses <b>NavPolicy(<i>"case"</i>)</b> to find the case and then calls
             <b>PlacePolicy()</b> to place the object there.
-            In addition, Spot is able to take an alternative route to avoid collision with humans as shown in the micro-kitchen demo.
-            This shows that Spot is robust to disturbance.
+            In addition, our navigation policy is able to take an alternative route to avoid collision with humans as shown in the micro-kitchen demo.
+            Moreoever, our pick policy is able to change the grasping location if the object moves in the robotics lab demo.
+            These show that our proposed method is robust to disturbance.
           </p>
 
         </div>
