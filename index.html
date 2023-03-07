@@ -91,7 +91,21 @@
           <h1 class="title is-1 publication-title">Open-vocabulary Mobile Pick-and-Place</h1>
           <div class="is-size-5 publication-authors">
             <span class="author-block">
-              <a href="https://sites.google.com/view/tyjimmyyang">Tsung-Yen Yang et al</a><sup>1</sup>,</span>
+              <a href="https://sites.google.com/view/tyjimmyyang">Tsung-Yen Yang</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://github.com/SergioArnaud">Sergio Arnaud</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://scholar.google.com/citations?user=p463opcAAAAJ&hl=en">Alexander William Clegg</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://www.ericundersander.com/">Eric Undersander</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://roozbehm.info/">Roozbeh Mottaghi</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://scholar.google.com/citations?user=DMTuJzAAAAAJ&hl=en">Mrinal Kalakrishnan</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://faculty.cc.gatech.edu/~dbatra/">Dhruv Batra</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://akshararai.github.io/">Akshara Rai</a><sup>1</sup>,</span>
           </div>
 
           <div class="is-size-5 publication-authors">
@@ -186,13 +200,29 @@
         <h2 class="title is-3">Introduction</h2>
         <div class="content has-text-justified">
           <p>
-            Placeholder
+            Natural language provides a simple way for humans to specify a goal for a robot,
+            such as <i>"go to the kitchen and bring the sugar to me."</i>
+            However, current state-of-the-art language-based embodied AI systems
+            such as SayCan do not have such capability since
+            (1) they rely on a fixed-set vocabulary that cannot generalize to diverse instructions,
+            and (2) the robot does not know the semantic meaning of the environment,
+            and thus requires knowing point goal location to navigate to.
           </p>
           <p>
-            Placeholder
+            In this post, we demonstrate embodied AI systems that use large language models (LLMs)
+            to chain Spot's low-level skills and thus complete open-vocabulary object nav-pick-place tasks.
+            The proposed system consists of three parts:
+            (1) LLMs take a natural language instruction as input and produce a sequence of low-level skills,
+            along with their corresponding skills' input parameters such as the target object text,
+            (2) a pre-built map that stores CLIP embedding of the environment is used to query the point goal location given text generated from LLMs,
+            and (3) finally these low-level skills are executed sequentially to complete the task.
           </p>
           <p>
-            Placeholder
+            By doing so, the robot figures out the location of the target object and formulates a plan of action.
+            These components form a natural hierarchical architecture for intelligent control:
+            a high level at which goal and state are identified from sensory data
+            and object search and feasible plans are formulated given text,
+            and a low level at which skills are chained together.
           </p>
         </div>
       </div>
@@ -217,8 +247,7 @@
 <section class="section">
   <div class="container is-max-desktop">
 
-    <div class="columns is-centered">
-
+    <div class="columns is-centered has-text-centered">
       <!-- Visual Effects. -->
       <div class="column">
         <div class="content">
@@ -226,10 +255,23 @@
           <p>
             <!-- Using <i>nerfies</i> you can create fun visual effects. This Dolly zoom effect
             would be impossible without nerfies since it would require going through a wall. -->
-            Placeholder
+            In this demo, a user types <i>"find human and get mug and place it in the case"</i>,
+            LLMs take the text input and outputs a sequence of low-level skills:
+            <b>NavPolicy(<i>"human"</i>) -> PickPolicy(<i>"mug"</i>) -> NavPolicy(<i>"case"</i>) -> PlacePolicy()</b>.
+            When executing <b>NavPolicy(<i>"human"</b>),
+            a CLIP embedding map of the environment is queried to get a point-goal location of the human.
+            Then this point goal location is fed into a reinforcement-learning-trained navigation policy
+            to let Spot navigate to the target. After Spot finds the human,
+            <b>PickPolicy(<i>"mug"</i>)</b> is used to pick up the target object.
+            The pick policy is trained to move the arm to the target grasping location of the object
+            defined by the text so that Spot can grasp the object.
+            Finally, Spot uses <b>NavPolicy(<i>"case"</i>)</b> to find the case and then calls
+            <b>PlacePolicy()</b> to place the object there.
+            In addition, Spot is able to take an alternative route to avoid collision with humans as shown in the micro-kitchen demo.
+            This shows that Spot is robust to disturbance.
           </p>
           <video id="dollyzoom" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/play_spot_march2.mp4"
+            <source src="./static/videos/spot_cvpr_demo_v0.2.mp4"
                     type="video/mp4">
           </video>
         </div>
