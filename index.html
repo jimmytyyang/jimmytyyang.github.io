@@ -124,7 +124,7 @@
             In this demo, a user types <i>"find human and get mug and place it in the case"</i>,
             LLMs take the text input and outputs a sequence of low-level skills:
             <b>NavPolicy(<i>"human"</i>) -> PickPolicy(<i>"mug"</i>) -> NavPolicy(<i>"case"</i>) -> PlacePolicy()</b>.
-            When executing <b>NavPolicy(<i>"human"</b>),
+            When executing <b>NavPolicy(<i>"human"<i>)</b>,
             a CLIP embedding map of the environment is queried to get a point-goal location of the human.
             Then this point goal location is fed into a reinforcement-learning-trained navigation policy
             to let Spot navigate to the target. After Spot finds the human,
@@ -165,6 +165,28 @@
   </div>
 </section>
 
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Acknowledgment</h2>
+        <div class="content has-text-justified">
+          <p>
+            This demo pieces many efforts together within the Embodied AI team at FAIR.
+            One critical component of this demo is low-level skills. These low-level skills are from
+            <a href="https://adaptiveskillcoordination.github.io/">Adaptive Skill Coordination for Robotic Mobile Manipulation paper</a>.
+            In addition, this demo uses LLMs to plan a sequence of low-level skills.
+            Sergio Arnaud and Oleksandr Maksymets lead the project of using LLMs in <a herf="https://aihabitat.org/">Habitat</a>.
+            Finally, we also use the idea from the paper
+            <a herf="https://arxiv.org/pdf/2212.00922.pdf">Navigating to Objects in the Real World</a>
+            to get the map of the environment. We thank Christopher Paxton for the helpful discussion.
+            Finally, We thank all the people in the Embodied AI team who provided important feedback for this demo.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <footer class="footer">
   <div class="container">
