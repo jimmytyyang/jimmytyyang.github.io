@@ -124,7 +124,7 @@
             In this demo, a user types <i>"find human and get mug and place it in the case"</i>,
             LLMs take the text input and outputs a sequence of low-level skills:
             <b>NavPolicy(<i>"human"</i>) -> PickPolicy(<i>"mug"</i>) -> NavPolicy(<i>"case"</i>) -> PlacePolicy()</b>.
-            When executing <b>NavPolicy(<i>"human"<i>)</b>,
+            When executing <b>NavPolicy(<i>"human"</i>)</b>,
             a CLIP embedding map of the environment is queried to get a point-goal location of the human.
             Then this point goal location is fed into a reinforcement-learning-trained navigation policy
             to let Spot navigate to the target. After Spot finds the human,
