@@ -77,11 +77,19 @@
   </div>
 </section>
 
+
+
 <section class="section">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
         <h2 class="title is-3">Introduction</h2>
+        <br>
+        <div class="videoWrapper">
+          <iframe width="2560" height="1135"
+            src="https://www.youtube.com/embed/cQIQKCt0YIY" title="Open-vocabulary Mobile Pick-and-Place for Spot" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
+          </iframe>
+        </div>
         <div class="content has-text-justified">
           <p>
             Natural language provides a simple way for humans to specify a goal for a robot,
@@ -126,7 +134,7 @@
             LLMs take the text input and outputs a sequence of low-level skills:
             <b>NavPolicy(<i>"human"</i>) -> PickPolicy(<i>"mug"</i>) -> NavPolicy(<i>"case"</i>) -> PlacePolicy()</b>.
             When executing <b>NavPolicy(<i>"human"</i>)</b>,
-            a CLIP embedding map of the environment is queried to get a point-goal location of the human.
+            a semantic feature map of the environment is queried to get a point-goal location of the human.
             Then this point goal location is fed into a reinforcement-learning-trained navigation policy
             to let Spot navigate to the target. After Spot finds the human,
             <b>PickPolicy(<i>"mug"</i>)</b> is used to pick up the target object.
@@ -165,6 +173,8 @@
     </div>
   </div>
 </section>
+
+
 
 <section class="section">
   <div class="container is-max-desktop">
