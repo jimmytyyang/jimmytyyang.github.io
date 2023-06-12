@@ -6,7 +6,7 @@
         content="Spot is powered by large language models to chain low-level skills to achieve language rearrangement tasks.">
   <meta name="keywords" content="Large Language Models, Open-vocabulary pick-and-place">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Open-vocabulary Mobile Pick-and-Place</title>
+  <title>Robot Butler: Open-vocabulary Mobile Pick-and-Place</title>
 
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src=""></script>
@@ -41,27 +41,12 @@
 </head>
 <body>
 
-  Tsung-Yen Yang*, 
-  Sergio Arnaud*, 
-  Kavit Shah*, 
-  Naoki Yokoyama, 
-  Alex Clegg, 
-  Joanne Truong, 
-  Eric Undersander, 
-  Oleksandr Maksymets, 
-  Sehoon Ha, 
-  Mrinal Kalakrishnan, 
-  Roozbeh Mottaghi, 
-  Dhruv Batra, 
-  Akshara Rai
-
-
 <section class="hero">
   <div class="hero-body">
     <div class="container is-max-desktop">
       <div class="columns is-centered">
         <div class="column has-text-centered">
-          <h1 class="title is-1 publication-title">Open-vocabulary Mobile Pick-and-Place</h1>
+          <h1 class="title is-1 publication-title">Robot Butler - Open-Vocabulary Mobile Pick-and-Place for Spot</h1>
           <div class="is-size-5 publication-authors">
             <span class="author-block">
               <a href="https://sites.google.com/view/tyjimmyyang">Tsung-Yen Yang</a><sup>1*</sup>,</span>
@@ -91,9 +76,11 @@
               <a href="https://akshararai.github.io/">Akshara Rai</a><sup>1</sup></span>
           </div>
           <div class="is-size-5 publication-authors">
-            <span class="author-block"><sup>*</sup>Equal Contribution</span>
             <span class="author-block"><sup>1</sup>Meta AI, FAIR Team</span>
             <span class="author-block"><sup>2</sup>Georgia Tech</span>
+            <span class="author-block"><sup>*</sup>Equal Contribution</span>
+            <span class="author-block"></sup>Meta Booth Schedule: </span>
+            <span class="author-block"></sup>Demo Track Booth Schedule: </span>
           </div>
         </div>
       </div>
@@ -101,12 +88,11 @@
   </div>
 </section>
 
-
 <section class="section">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
-        <h2 class="title is-3">Introduction</h2>
+        <h2 class="title is-3">Demo</h2>
         <br>
         <div class="videoWrapper">
           <iframe width="100%" height="480"
@@ -114,7 +100,7 @@
           </iframe>
         </div>
         <div class="content has-text-justified">
-          <p>
+          <!-- <p>
             Natural language provides a simple way for humans to specify a goal for a robot,
             such as <i>"go to the kitchen and bring the sugar to me."</i>
             However, current state-of-the-art language-based embodied AI systems
@@ -138,6 +124,16 @@
             a high level at which goal and state are identified from sensory data
             and object search and feasible plans are formulated given text,
             and a low level at which skills are chained together while being a response to changing conditions.
+          </p> -->
+          <p>
+            In this demo, we are going to show that a robot receives natural language instruction for completing the task
+            of open-vocabulary object nav-pick-place tasks.
+            The user is able to provide the instruction either by typing or saying using a keyboard or microphone.
+            For example, the first demo in the video (2:35) shows a user typing <i>"find human and get mug and place it in the case"</i>.
+            The robot first goes to the human location, picks up the mug, navigates to the case, and places the mug there.
+            In addition, the second demo in the video (3:22) shows a user typing <i>"navigate to the human and get the mug and place it in the sink"</i>.
+            The robot first goes to the human location, grasps the mug, and finally places the mug in the sink.
+            The user will be able to provide free-form instructions, and the robot will follow the instruction.
           </p>
         </div>
       </div>
@@ -145,16 +141,50 @@
   </div>
 </section>
 
+<!-- The first demo in the video shows a user typing <i>"find human and get mug and place it in the case"</i>,
+LLMs take the text input and outputs a sequence of low-level skills:
+<b>NavPolicy(<i>"human"</i>) -> PickPolicy(<i>"mug"</i>) -> NavPolicy(<i>"case"</i>) -> PlacePolicy()</b>.
+When executing <b>NavPolicy(<i>"human"</i>)</b>,
+a semantic feature map of the environment is queried to get a point-goal location of the human.
+Then this point goal location is fed into a reinforcement-learning-trained navigation policy
+to let Spot navigate to the target. After Spot finds the human,
+<b>PickPolicy(<i>"mug"</i>)</b> is used to pick up the target object.
+The pick policy is trained to move the arm to the target grasping location of the object
+defined by the text so that Spot can grasp the object.
+Finally, Spot uses <b>NavPolicy(<i>"case"</i>)</b> to find the case and then calls
+<b>PlacePolicy()</b> to place the object there.
+In addition, our navigation policy is able to take an alternative route to avoid collision with humans as shown in the micro-kitchen demo.
+Moreoever, our pick policy is able to change the grasping location if the object moves in the robotics lab demo.
+These show that our proposed method is robust to disturbance. -->
+
+
 
 <section class="section">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
-        <h2 class="title is-3">Demo</h2>
+        <h2 class="title is-3">Approach</h2>
         <div class="content has-text-justified">
           <p>
-            In the first demo, a user types <i>"find human and get mug and place it in the case"</i>,
-            LLMs take the text input and outputs a sequence of low-level skills:
+            Natural language provides a simple way for humans to specify a goal for a robot,
+            such as <i>"go to the kitchen and bring the sugar to me."</i>
+            However, current state-of-the-art language-based embodied AI systems do not have such capability since
+            (1) they rely on a fixed-set vocabulary that cannot generalize to diverse instructions,
+            and (2) the robot does not know the semantic meaning of the environment,
+            and thus requires knowing the point goal location to navigate to.
+          </p>
+          <p>
+            In this demo, we demonstrate embodied AI systems that use large language models (LLMs)
+            to chain Spot's (quadruped robot by Boston Dynamics) low-level skills and thus complete open-vocabulary object nav-pick-place tasks.
+            The proposed system consists of three parts:
+            (1) LLMs take natural language instruction as input and produce a sequence of low-level skills,
+            along with their corresponding skills' input parameters such as the target object name,
+            (2) a pre-built map that stores CLIP embedding of the environment is used to query the point goal location given text generated from LLMs,
+            and (3) finally these low-level skills are executed sequentially to complete the task.
+          </p>
+          <p>
+            For example, the first demo in the video (2:35) shows a user typing <i>"find human and get mug and place it in the case"</i>,
+            LLMs take the text input and output a sequence of low-level skills:
             <b>NavPolicy(<i>"human"</i>) -> PickPolicy(<i>"mug"</i>) -> NavPolicy(<i>"case"</i>) -> PlacePolicy()</b>.
             When executing <b>NavPolicy(<i>"human"</i>)</b>,
             a semantic feature map of the environment is queried to get a point-goal location of the human.
@@ -166,65 +196,44 @@
             Finally, Spot uses <b>NavPolicy(<i>"case"</i>)</b> to find the case and then calls
             <b>PlacePolicy()</b> to place the object there.
             In addition, our navigation policy is able to take an alternative route to avoid collision with humans as shown in the micro-kitchen demo.
-            Moreoever, our pick policy is able to change the grasping location if the object moves in the robotics lab demo.
+            Moreover, our pick policy is able to change the grasping location if the object moves in the robotics lab demo.
             These show that our proposed method is robust to disturbance.
           </p>
-
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<section class="section">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-3">Future Direction</h2>
-        <div class="content has-text-justified">
-          <p>
-            The current demo still does not consider the case where the object is not static
-            (locations changed over time), LLMs need to replan due to disturbance,
-            and when a pre-built map of the environment is not provided.
-            We want to keep scaling our research and infrastructure to multiple scenes and explore
-            other Spot's low-level skills such as opening the door and pouring the coffee into a mug.
-            In addition, we are continuously exploring LLMs for driving decision-making
-            for robots such as grounding LLMs in the state of the robot to account for disturbance.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-
-<section class="section">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-3">Acknowledgment</h2>
-        <div class="content has-text-justified">
           <p>
             This demo pieces many efforts together within the Embodied AI team at FAIR.
             One critical component of this demo is low-level skills.
             These low-level skills are from
             <a href="https://adaptiveskillcoordination.github.io/">Adaptive Skill Coordination for Robotic Mobile Manipulation paper</a>.
-            In addition, this demo uses LLMs to plan a sequence of low-level skills.
-            Sergio Arnaud and Oleksandr Maksymets lead the project of using LLMs in
-            <a href="https://aihabitat.org/">Habitat</a>.
             Moreover, we use the idea from the paper
-            <a href="https://arxiv.org/abs/2212.00922">Navigating to Objects in the Real World</a>
-            to get the map of the environment.
-            Finally, Tsung-Yen Yang leads the research and infrastructure effort of Spot robots.
-            We thank Christopher Paxton for the helpful discussion, and all the people in the Embodied AI team who provided important feedback for this demo.
+            <a href="https://arxiv.org/abs/2212.00922">Navigating to Objects in the Real World</a> for building the semantic map of the environment.
           </p>
         </div>
       </div>
     </div>
   </div>
 </section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">“Limitations and Future Work</h2>
+        <div class="content has-text-justified">
+          <p>
+            There are several limitations and areas for future work.
+            First, while our demo is a reasonably general approach,
+            we do not integrate Spot with the skills such as opening doors or drawers.
+            This will improve generalization to other mobile manipulation tasks.
+            Second, we run our demo in static environments where the location of the object is approximately fixed and the robot is the only agent.
+            Future work involves studying human-robot collaboration in a more active way,
+            and dynamic environments.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 
 <footer class="footer">
   <div class="container">
